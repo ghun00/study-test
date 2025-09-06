@@ -7,6 +7,8 @@ const nextConfig = {
   },
   // GitHub Pages를 위한 설정
   distDir: 'out',
+  basePath: '/study-test',
+  assetPrefix: '/study-test/',
   // GitHub Pages에서 index.html이 우선순위를 가지도록 설정
   generateBuildId: async () => {
     return 'build-' + Date.now()
