@@ -108,7 +108,7 @@ export default function CounselPage() {
                       효율 기반 성장 설계
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      "많이"보다 "제대로"를 목표로 한 루틴 다이어트와 성취 기반 동기 강화
+                      &ldquo;많이&rdquo;보다 &ldquo;제대로&rdquo;를 목표로 한 루틴 다이어트와 성취 기반 동기 강화
                     </p>
                   </div>
                 </div>

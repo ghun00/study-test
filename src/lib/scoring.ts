@@ -30,8 +30,8 @@ export function calculateScores(answers: QuizAnswer[]): QuizScores {
 export function determineOutcome(scores: QuizScores): OutcomeType {
   const maxScore = Math.max(...Object.values(scores));
   const topTypes = Object.entries(scores)
-    .filter(([_, score]) => score === maxScore)
-    .map(([type, _]) => type as OutcomeType);
+    .filter(([, score]) => score === maxScore)
+    .map(([type]) => type as OutcomeType);
 
   // 동점 시 우선순위에 따라 결정
   for (const priorityType of PRIORITY_ORDER) {
