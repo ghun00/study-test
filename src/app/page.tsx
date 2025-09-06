@@ -352,9 +352,11 @@ export default function Home() {
       overload: '자기주도 과부하형'
     };
     
-    return (
-      <div className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto">
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
+        <div className="md:min-h-screen md:flex md:items-center md:justify-center">
+          <div className="w-full md:max-w-md">
           {/* App Bar */}
           <div className="sticky top-0 bg-white px-6 py-2">
             <div className="flex items-center">
@@ -456,6 +458,7 @@ export default function Home() {
             >
               다시 진단하기
             </button>
+          </div>
           </div>
           </div>
         </div>
