@@ -89,39 +89,68 @@ export default function Home() {
             <div className="w-full md:max-w-md">
               <div className="px-6 py-12 text-center">
                 {/* 3D Study Icon */}
-                <div className="mb-8">
-                  <div className="w-24 h-24 mx-auto bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
+                <div className="relative mb-8">
+                  <div className="w-24 h-24 mx-auto bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-inner">
+                      <svg className="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    </div>
                   </div>
+                  {/* Floating elements for 3D effect */}
+                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-orange-300 rounded-full animate-bounce"></div>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">
                   예체능 입시생을 위한<br />
-                  2분 학습 습관 테스트
+                  <span className="text-orange-500">2분 학습 습관 테스트</span>
                 </h1>
+              </div>
 
-                {/* Features */}
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center justify-center space-x-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">간단한 테스트 - 2분 만에 확인하는 나의 학습 습관</span>
+              {/* Features */}
+              <div className="px-6 space-y-6 mb-12">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
-                  <div className="flex items-center justify-center space-x-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">솔루션: 나의 공부 성향을 분석하여 맞춤 전략을 전달해드릴게요</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">간단한 테스트</h3>
+                    <p className="text-gray-600 text-sm">2분 만에 확인하는 나의 학습 습관</p>
                   </div>
                 </div>
 
-                {/* Start Button */}
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">솔루션</h3>
+                    <p className="text-gray-600 text-sm">나의 공부 성향을 분석하여 맞춤 전략을 전달해드릴게요</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="px-6">
                 <button
                   onClick={handleStartQuiz}
-                  className="w-full bg-orange-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-orange-600 transition-colors"
+                  className="w-full bg-orange-500 text-white py-4 rounded-2xl font-bold text-lg hover:bg-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  진단 시작하기
+                  테스트 시작하기
                 </button>
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 text-center mt-8">
+                <p className="text-gray-500 text-sm">
+                  무료 테스트 · 개인정보 보호 · 즉시 결과 확인
+                </p>
               </div>
             </div>
           </div>
@@ -140,15 +169,15 @@ export default function Home() {
               <div className="px-6 py-8">
                 {/* Progress Bar */}
                 <div className="mb-8">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                  <div className="flex justify-between text-xs text-gray-500 mb-2">
                     <span>진행률</span>
-                    <span>{currentQuestionIndex + 1} / {QUIZ_QUESTIONS.length}</span>
+                    <span>{currentQuestionIndex + 1}/{QUIZ_QUESTIONS.length}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-orange-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${progress}%` }}
-                    ></div>
+                    />
                   </div>
                 </div>
 
@@ -158,44 +187,46 @@ export default function Home() {
                     {currentQuestion.title}
                   </h2>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-3 mb-8">
                     {currentQuestion.options.map((option) => (
                       <button
                         key={option.key}
                         onClick={() => handleAnswerSelect(option.key)}
-                        className={`w-full p-4 text-left rounded-xl border-2 transition-colors ${
+                        className={`w-full p-4 text-left border rounded-xl transition-colors duration-200 ${
                           selectedAnswer === option.key
-                            ? 'border-orange-500 bg-orange-50 text-orange-700'
-                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                            ? 'border-orange-500 bg-orange-50'
+                            : 'border-gray-200 hover:bg-orange-50 hover:border-orange-200'
                         }`}
                       >
-                        <span className="font-medium">{option.key}.</span> {option.label}
+                        <span className="font-medium text-gray-900">
+                          {option.key}. {option.label}
+                        </span>
                       </button>
                     ))}
                   </div>
-                </div>
 
-                {/* Navigation Buttons */}
-                <div className="flex space-x-3">
-                  {currentQuestionIndex > 0 && (
+                  {/* Navigation Buttons */}
+                  <div className="flex gap-3">
+                    {currentQuestionIndex > 0 && (
+                      <button
+                        onClick={handlePrevious}
+                        className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors duration-200"
+                      >
+                        이전
+                      </button>
+                    )}
                     <button
-                      onClick={handlePrevious}
-                      className="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-semibold hover:bg-gray-200 transition-colors"
+                      onClick={handleNext}
+                      disabled={!selectedAnswer}
+                      className={`flex-1 py-3 rounded-xl font-semibold transition-colors duration-200 ${
+                        selectedAnswer
+                          ? 'bg-orange-500 text-white hover:bg-orange-600'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
                     >
-                      이전
+                      {currentQuestionIndex === QUIZ_QUESTIONS.length - 1 ? '완료' : '다음'}
                     </button>
-                  )}
-                  <button
-                    onClick={handleNext}
-                    disabled={!selectedAnswer}
-                    className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-colors ${
-                      selectedAnswer
-                        ? 'bg-orange-500 text-white hover:bg-orange-600'
-                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    }`}
-                  >
-                    {currentQuestionIndex === QUIZ_QUESTIONS.length - 1 ? '완료' : '다음'}
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -213,65 +244,77 @@ export default function Home() {
           <div className="md:min-h-screen md:flex md:items-center md:justify-center">
             <div className="w-full md:max-w-md">
               <div className="px-6 py-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                  연락처를 입력해주세요
-                </h2>
+                {/* Header */}
+                <div className="mb-8">
+                  <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                    연락처를 입력해주세요
+                  </h1>
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-xs text-gray-600">
+                      입력하신 연락처 및 개인정보는 진단 결과 제공 목적으로만 사용되어요.
+                    </p>
+                  </div>
+                </div>
 
+                {/* Contact Form */}
                 <form onSubmit={handleContactSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      휴대폰 번호 *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={contactInfo.phone}
-                      onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                      className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      placeholder="010-1234-5678"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      이름 (선택)
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                      이름 (선택사항)
                     </label>
                     <input
                       type="text"
+                      id="name"
                       value={contactInfo.name}
                       onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
-                      className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
                       placeholder="홍길동"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      이메일 (선택)
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      휴대폰 번호 <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={contactInfo.phone}
+                      onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+                      placeholder="010-1234-5678"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      이메일 (선택사항)
                     </label>
                     <input
                       type="email"
+                      id="email"
                       value={contactInfo.email}
                       onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                      className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
                       placeholder="example@email.com"
                     />
                   </div>
 
-                  {/* Privacy Notice */}
-                  <div className="bg-gray-100 p-4 rounded-xl">
-                    <p className="text-sm text-gray-600">
-                      입력하신 연락처 및 개인정보는 진단 결과 제공 목적으로만 사용되어요.
-                    </p>
-                  </div>
-
                   <button
                     type="submit"
-                    className="w-full bg-orange-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-orange-600 transition-colors"
+                    className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold hover:bg-orange-600 transition-colors duration-200"
                   >
                     진단 결과 확인하기
                   </button>
                 </form>
+
+                <button
+                  onClick={() => setCurrentQuestionIndex(QUIZ_QUESTIONS.length - 1)}
+                  className="w-full mt-4 text-gray-500 py-2 text-sm hover:text-gray-700 transition-colors duration-200"
+                >
+                  ← 이전으로 돌아가기
+                </button>
               </div>
             </div>
           </div>
