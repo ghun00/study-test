@@ -15,11 +15,11 @@ export default function Home() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<OutcomeType | null>(null);
   const [contactInfo, setContactInfo] = useState({
-    name: '',
     phone: '',
-    email: ''
+    grade: ''
   });
   const [showToast, setShowToast] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / QUIZ_QUESTIONS.length) * 100;
@@ -58,12 +58,12 @@ export default function Home() {
     }
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 휴대폰 번호 필수 검증
-    if (!contactInfo.phone.trim()) {
-      console.log('Phone number is empty, showing toast');
+    // 휴대폰 번호 및 학년 필수 검증
+    if (!contactInfo.phone.trim() || !contactInfo.grade) {
+      console.log('Phone number or grade is empty, showing toast');
       setShowToast(true);
       setTimeout(() => {
         console.log('Hiding toast');
@@ -72,15 +72,40 @@ export default function Home() {
       return;
     }
     
-    // 디버깅을 위해 API 호출 우회
-    console.log('Quiz Data:', { answers, contactInfo });
+    setIsSubmitting(true);
     
-    // 점수 계산 및 결과 결정
-    const scores = calculateScores(answers);
-    const determinedOutcome = determineOutcome(scores);
-    
-    setOutcome(determinedOutcome);
-    setCurrentStep('result');
+    try {
+      // 점수 계산 및 결과 결정
+      const scores = calculateScores(answers);
+      const determinedOutcome = determineOutcome(scores);
+      
+      // Google Apps Script API 호출 (URL 파라미터 방식)
+      const params = new URLSearchParams();
+      params.append('phone', contactInfo.phone);
+      params.append('grade', contactInfo.grade);
+      params.append('outcome', determinedOutcome);
+      
+      // Google Apps Script API 호출 (GET 방식)
+      await fetch(`https://script.google.com/macros/s/AKfycbz5D6jUZc6deEXtRorLMnDsqyb9kuos6cyGrBHxrb2BDdvG-PTNndZhudZKILqt5iCd_Q/exec?${params}`, {
+        method: 'GET',
+        mode: 'no-cors'
+      });
+      
+      console.log('Data sent to Google Sheets');
+      // no-cors 모드에서는 응답을 읽을 수 없으므로 항상 성공으로 처리
+      setOutcome(determinedOutcome);
+      setCurrentStep('result');
+      
+    } catch (error) {
+      console.error('API call failed:', error);
+      // 네트워크 에러 등이 발생해도 결과는 보여주기
+      const scores = calculateScores(answers);
+      const determinedOutcome = determineOutcome(scores);
+      setOutcome(determinedOutcome);
+      setCurrentStep('result');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleRestart = () => {
@@ -89,7 +114,7 @@ export default function Home() {
     setAnswers([]);
     setSelectedAnswer(null);
     setOutcome(null);
-    setContactInfo({ name: '', phone: '', email: '' });
+    setContactInfo({ phone: '', grade: '' });
   };
 
   // Cover Page
@@ -271,17 +296,25 @@ export default function Home() {
                 {/* Contact Form */}
                 <form onSubmit={handleContactSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      이름 (선택사항)
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      학년 <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={contactInfo.name}
-                      onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
-                      placeholder="홍길동"
-                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      {['고1', '고2', '고3', '재수', 'N수'].map((grade) => (
+                        <button
+                          key={grade}
+                          type="button"
+                          onClick={() => setContactInfo({ ...contactInfo, grade })}
+                          className={`px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
+                            contactInfo.grade === grade
+                              ? 'border-orange-500 bg-orange-50 text-orange-700 font-semibold'
+                              : 'border-gray-200 bg-white text-gray-700 hover:border-orange-300 hover:bg-orange-25'
+                          }`}
+                        >
+                          {grade}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <div>
@@ -298,25 +331,26 @@ export default function Home() {
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      이메일 (선택사항)
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={contactInfo.email}
-                      onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
-                      placeholder="example@email.com"
-                    />
-                  </div>
-
                   <button
                     type="submit"
-                    className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold hover:bg-orange-600 transition-colors duration-200"
+                    disabled={isSubmitting}
+                    className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
+                      isSubmitting
+                        ? 'bg-orange-300 text-white cursor-not-allowed'
+                        : 'bg-orange-500 text-white hover:bg-orange-600'
+                    }`}
                   >
-                    진단 결과 확인하기
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>분석 중...</span>
+                      </>
+                    ) : (
+                      <span>진단 결과 확인하기</span>
+                    )}
                   </button>
                 </form>
 
@@ -339,7 +373,7 @@ export default function Home() {
                 <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
-                <span className="font-semibold text-sm">연락처를 입력해주세요</span>
+                <span className="font-semibold text-sm">학년과 연락처를 입력해주세요</span>
               </div>
             </div>
           </div>
