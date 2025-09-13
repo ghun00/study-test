@@ -19,6 +19,7 @@ export default function Home() {
     phone: '',
     email: ''
   });
+  const [showToast, setShowToast] = useState(false);
 
   const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / QUIZ_QUESTIONS.length) * 100;
@@ -60,6 +61,17 @@ export default function Home() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // 휴대폰 번호 필수 검증
+    if (!contactInfo.phone.trim()) {
+      console.log('Phone number is empty, showing toast');
+      setShowToast(true);
+      setTimeout(() => {
+        console.log('Hiding toast');
+        setShowToast(false);
+      }, 3000);
+      return;
+    }
+    
     // 디버깅을 위해 API 호출 우회
     console.log('Quiz Data:', { answers, contactInfo });
     
@@ -87,7 +99,7 @@ export default function Home() {
         <div className="max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
           <div className="md:min-h-screen md:flex md:items-center md:justify-center">
             <div className="w-full md:max-w-md">
-              <div className="px-6 py-12 text-center">
+              <div className="px-4 py-12 text-center">
                 {/* 3D Study Icon */}
                 <div className="relative mb-8">
                   <div className="w-24 h-24 mx-auto bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
@@ -110,7 +122,7 @@ export default function Home() {
               </div>
 
               {/* Features */}
-              <div className="px-6 space-y-6 mb-12">
+              <div className="px-4 space-y-6 mb-12">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
                     <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +149,7 @@ export default function Home() {
               </div>
 
               {/* CTA Button */}
-              <div className="px-6">
+              <div className="px-4">
                 <button
                   onClick={handleStartQuiz}
                   className="w-full bg-orange-500 text-white py-4 rounded-2xl font-bold text-lg hover:bg-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -147,7 +159,7 @@ export default function Home() {
               </div>
 
               {/* Footer */}
-              <div className="px-6 text-center mt-8">
+              <div className="px-4 text-center mt-8">
                 <p className="text-gray-500 text-sm">
                   무료 테스트 · 개인정보 보호 · 즉시 결과 확인
                 </p>
@@ -166,7 +178,7 @@ export default function Home() {
         <div className="max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
           <div className="md:min-h-screen md:flex md:items-center md:justify-center">
             <div className="w-full md:max-w-md">
-              <div className="px-6 py-8">
+              <div className="px-4 py-8">
                 {/* Progress Bar */}
                 <div className="mb-8">
                   <div className="flex justify-between text-xs text-gray-500 mb-2">
@@ -243,7 +255,7 @@ export default function Home() {
         <div className="max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
           <div className="md:min-h-screen md:flex md:items-center md:justify-center">
             <div className="w-full md:max-w-md">
-              <div className="px-6 py-8">
+              <div className="px-4 py-8">
                 {/* Header */}
                 <div className="mb-8">
                   <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -251,7 +263,7 @@ export default function Home() {
                   </h1>
                   <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <p className="text-xs text-gray-600">
-                      입력하신 연락처 및 개인정보는 진단 결과 제공 목적으로만 사용되어요.
+                      입력하신 연락처 및 개인정보는 진단 결과 제공과 이벤트 제공 목적으로만 사용돼요.
                     </p>
                   </div>
                 </div>
@@ -283,7 +295,6 @@ export default function Home() {
                       onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
                       placeholder="010-1234-5678"
-                      required
                     />
                   </div>
 
@@ -319,6 +330,20 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Toast Alert */}
+        {showToast && (
+          <div className="fixed top-12 left-12 right-12 z-[9999] animate-pulse">
+            <div className="bg-red-500 text-white px-4 py-2 rounded-xl shadow-2xl border-2 border-red-600">
+              <div className="flex items-center space-x-3">
+                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <span className="font-semibold text-sm">연락처를 입력해주세요</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -339,7 +364,7 @@ export default function Home() {
           <div className="md:min-h-screen md:flex md:items-center md:justify-center">
             <div className="w-full md:max-w-md">
               {/* App Bar */}
-              <div className="sticky top-0 bg-white px-6 py-2">
+              <div className="sticky top-0 bg-white px-4 py-2">
                 <div className="flex items-center">
                   <button
                     onClick={() => setCurrentStep('contact')}
@@ -352,7 +377,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="px-6 py-4">
+              <div className="px-4 py-4">
                 {/* Diagnosis Type */}
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-2xl text-white mb-4">
                   <h2 className="text-xl font-bold mb-2">
@@ -399,7 +424,7 @@ export default function Home() {
                   </div>
 
                   {/* Academy Management */}
-                  <div className="bg-orange-50 p-6 rounded-xl mb-4">
+                  <div className="bg-orange-50 p-6 rounded-xl mb-24">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                       <span className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-3">
                         <span className="text-orange-500 text-xs">🏫</span>
@@ -416,7 +441,7 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <div className="bg-white p-3 rounded-lg border border-orange-200">
+                    <div className="bg-white p-3 rounded-lg border border-orange-200 mb-4">
                       <p className="text-xs text-orange-600 font-medium">
                         {content.academyManagement.measurements}
                       </p>
@@ -434,7 +459,9 @@ export default function Home() {
             <div className="md:min-h-screen md:flex md:items-center md:justify-center">
               <div className="w-full md:max-w-md">
                 <a
-                  href="/counsel"
+                  href="https://naver.me/FvQ8qPej"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block w-full bg-orange-500 text-white py-4 rounded-xl font-semibold text-center hover:bg-orange-600 transition-colors duration-200"
                 >
                   {content.ctaText}
